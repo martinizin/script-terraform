@@ -1,32 +1,29 @@
-# variables.tf
-# Variables de configuración del despliegue de TechUStart.
-
 variable "azure_region" {
-  description = "Región de despliegue de los recursos"
+  description = "Azure region where resources will be deployed"
   type        = string
   default     = "eastus"
 }
 
 variable "tamano_vm" {
-  description = "SKU económico/capa gratuita para la VM"
+  description = "VM SKU size"
   type        = string
   default     = "Standard_B1s"
 }
 
 variable "project_name" {
-  description = "Nombre del proyecto, usado como prefijo en los nombres de los recursos"
+  description = "Project name used as prefix for resource names"
   type        = string
   default     = "techustart"
 }
 
 variable "environment" {
-  description = "Ambiente de despliegue (dev, staging, prod, etc.)"
+  description = "Deployment environment (dev, staging, prod, etc.)"
   type        = string
   default     = "dev"
 }
 
 variable "common_tags" {
-  description = "Tags comunes aplicados a todos los recursos"
+  description = "Common tags applied to all resources"
   type        = map(string)
   default = {
     environment = "dev"
@@ -35,31 +32,31 @@ variable "common_tags" {
 }
 
 variable "vnet_address_space" {
-  description = "Espacio de direcciones de la red virtual"
+  description = "Virtual network address space"
   type        = list(string)
   default     = ["10.0.0.0/16"]
 }
 
 variable "subnet_address_prefixes" {
-  description = "Prefijos de direcciones de la subred"
+  description = "Subnet address prefixes"
   type        = list(string)
   default     = ["10.0.1.0/24"]
 }
 
 variable "public_ip_allocation_method" {
-  description = "Método de asignación de la dirección IP pública"
+  description = "Public IP address allocation method"
   type        = string
   default     = "Static"
 }
 
 variable "public_ip_sku" {
-  description = "SKU de la dirección IP pública"
+  description = "Public IP SKU"
   type        = string
   default     = "Standard"
 }
 
 variable "nsg_rules" {
-  description = "Lista de reglas de seguridad del grupo de seguridad de red"
+  description = "Network security group rules list"
   type = list(object({
     name                       = string
     priority                   = number
@@ -98,42 +95,42 @@ variable "nsg_rules" {
 }
 
 variable "nic_private_ip_address_allocation" {
-  description = "Método de asignación de la dirección IP privada de la interfaz de red"
+  description = "Network interface private IP address allocation method"
   type        = string
   default     = "Dynamic"
 }
 
 variable "admin_username" {
-  description = "Nombre de usuario administrador de la máquina virtual"
+  description = "Virtual machine administrator username"
   type        = string
   default     = "azureuser"
 }
 
 variable "ssh_public_key" {
-  description = "Clave pública SSH para la autenticación del usuario administrador"
+  description = "SSH public key for administrator user authentication"
   type        = string
 }
 
 variable "os_disk_caching" {
-  description = "Tipo de almacenamiento en caché del disco del sistema operativo"
+  description = "OS disk caching type"
   type        = string
   default     = "ReadWrite"
 }
 
 variable "os_disk_storage_account_type" {
-  description = "Tipo de cuenta de almacenamiento del disco del sistema operativo"
+  description = "OS disk storage account type"
   type        = string
   default     = "Standard_LRS"
 }
 
 variable "os_disk_name" {
-  description = "Nombre opcional del disco del sistema operativo. Si se deja vacío, se construye a partir del proyecto y el ambiente"
+  description = "Optional OS disk name. If empty, it will be built from project and environment"
   type        = string
   default     = ""
 }
 
 variable "os_image" {
-  description = "Configuración de la imagen del sistema operativo"
+  description = "Operating system image configuration"
   type = object({
     publisher = string
     offer     = string
@@ -149,7 +146,7 @@ variable "os_image" {
 }
 
 variable "custom_data" {
-  description = "Script de bootstrap en texto plano para ejecutar al iniciar la máquina virtual"
+  description = "Plain text bootstrap script to run on virtual machine first boot"
   type        = string
   default     = <<-EOF
 #!/bin/bash

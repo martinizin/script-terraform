@@ -18,7 +18,6 @@ locals {
   custom_data_base64 = base64encode(var.custom_data)
 }
 
-# Grupo de recursos principal que contendrá todos los recursos del entorno de desarrollo.
 resource "azurerm_resource_group" "rg" {
   name     = "${local.name_prefix}-rg"
   location = var.azure_region
@@ -26,7 +25,6 @@ resource "azurerm_resource_group" "rg" {
   tags = var.common_tags
 }
 
-# Red virtual con un espacio de direcciones privado amplio para futuros servicios.
 resource "azurerm_virtual_network" "vnet" {
   name                = "${local.name_prefix}-vnet"
   location            = azurerm_resource_group.rg.location
@@ -36,7 +34,6 @@ resource "azurerm_virtual_network" "vnet" {
   tags = var.common_tags
 }
 
-# Subred donde se conectará la interfaz de red de la VM.
 resource "azurerm_subnet" "subnet" {
   name                 = "${local.name_prefix}-subnet"
   resource_group_name  = azurerm_resource_group.rg.name
@@ -44,7 +41,6 @@ resource "azurerm_subnet" "subnet" {
   address_prefixes     = var.subnet_address_prefixes
 }
 
-# IP pública estática para exponer el servidor web de forma predecible.
 resource "azurerm_public_ip" "pip" {
   name                = "${local.name_prefix}-pip"
   location            = azurerm_resource_group.rg.location
@@ -55,9 +51,7 @@ resource "azurerm_public_ip" "pip" {
   tags = var.common_tags
 }
 
-# Grupo de seguridad de red con la regla mínima necesaria para HTTP.
-# Se agrega una segunda regla para SSH (puerto 22) documentada explícitamente como
-# excepción de administración, necesaria para la validación manual indicada en la guía.
+# NSG allowing HTTP and SSH (port 22) for manual administration.
 resource "azurerm_network_security_group" "nsg" {
   name                = "${local.name_prefix}-nsg"
   location            = azurerm_resource_group.rg.location
@@ -81,7 +75,6 @@ resource "azurerm_network_security_group" "nsg" {
   tags = var.common_tags
 }
 
-# Interfaz de red de la VM. Vincula la subred y la IP pública.
 resource "azurerm_network_interface" "nic" {
   name                = "${local.name_prefix}-nic"
   location            = azurerm_resource_group.rg.location
@@ -97,13 +90,11 @@ resource "azurerm_network_interface" "nic" {
   tags = var.common_tags
 }
 
-# Asocia el NSG a la interfaz de red de la VM.
 resource "azurerm_network_interface_security_group_association" "nic_nsg" {
   network_interface_id      = azurerm_network_interface.nic.id
   network_security_group_id = azurerm_network_security_group.nsg.id
 }
 
-# Máquina virtual Ubuntu Server 22.04 LTS (gen2) con autenticación SSH únicamente.
 resource "azurerm_linux_virtual_machine" "vm" {
   name                            = "${local.name_prefix}-vm"
   location                        = azurerm_resource_group.rg.location
