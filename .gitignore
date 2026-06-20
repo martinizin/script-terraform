@@ -1,0 +1,50 @@
+# Terraform local state - NEVER commit this to version control
+terraform.tfstate
+terraform.tfstate.*
+*.tfstate
+*.tfstate.*
+
+# Terraform lock info (transient lock files)
+.terraform.tfstate.lock.info
+
+# Terraform plugins and module cache
+.terraform/
+.terraform.lock.hcl
+
+# Terraform variable files that may contain secrets
+*.tfvars
+*.tfvars.json
+
+# Terraform plan output files
+*.tfplan
+tfplan
+
+# Terraform override files
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
+# Terraform crash logs
+crash.log
+crash.*.log
+
+# Sensitive files and keys
+*.pem
+*.key
+*.pub
+.env
+.env.*
+secrets.tf
+
+# Editor and OS files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OpenCode / local tooling metadata
+.atl/
